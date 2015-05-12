@@ -1,4 +1,4 @@
-# AutoPackage
+# AutoPackage for SVN 1.0
 
 This program is used for creating a  package (files and folders)  by svn revision ,
 unfortunately,there is still have a bug that when you try to run this program（AutoReadPackager.class）,
