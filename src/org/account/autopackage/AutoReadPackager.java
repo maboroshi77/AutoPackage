@@ -27,12 +27,12 @@ public class AutoReadPackager {
 
 	public static void main(String[] args) throws Exception {
 		
-		String username="ywm";
-		String password="asd_146";
-		String svnurl="https://172.18.8.79:85/svn/ICT/trunk/eapp_4.0.1";
+		String username="";
+		String password="";
+		String svnurl="";
 		String workSpacePath="D:/workspace/"; 
 		String updatePackagePath="E:/packages/"; 	
-		 //´ò°üÇ°±ØĞë¸üĞÂ´úÂë£¬²¢±£Ö¤±àÒë³É¹¦¡£
+		 //æ‰“åŒ…å‰å¿…é¡»æ›´æ–°ä»£ç ï¼Œå¹¶ä¿è¯ç¼–è¯‘æˆåŠŸã€‚
 		setParams4ProjectPackage(45711,45741,"eapp","eapp");	
 		startAutoPackage(username, password, svnurl, workSpacePath,updatePackagePath);
 	}
@@ -47,35 +47,35 @@ public class AutoReadPackager {
 		dataChangeSvnConfige.setSvnUserName(username);
 		dataChangeSvnConfige.setSvnPassword(password);
 		dataChangeSvnConfige.setSvnUrl(svnurl);	
-		/* SVNÒª´ò°üµÄ°æ±¾ºÅ
-		 * Ö§³Ö¶Ô¶à¸ö²»Í¬µÄ°æ±¾ºÅ½øĞĞ´ò°ü£¬Í¨¹ıMultiRevisionVoÀ´Ö§³Ö¶à¸ö°æ±¾ºÅ¡£
-		 * addRangeRevision()  ·½·¨ÊÇÔö¼ÓÒ»¸ö°æ±¾ºÅ·¶Î§¡£
-		 * addSinlgeRevision() Ôö¼ÓÒ»¸öµ¥¸ö°æ±¾ºÅ¡£
+		/* SVNè¦æ‰“åŒ…çš„ç‰ˆæœ¬å·
+		 * æ”¯æŒå¯¹å¤šä¸ªä¸åŒçš„ç‰ˆæœ¬å·è¿›è¡Œæ‰“åŒ…ï¼Œé€šè¿‡MultiRevisionVoæ¥æ”¯æŒå¤šä¸ªç‰ˆæœ¬å·ã€‚
+		 * addRangeRevision()  æ–¹æ³•æ˜¯å¢åŠ ä¸€ä¸ªç‰ˆæœ¬å·èŒƒå›´ã€‚
+		 * addSinlgeRevision() å¢åŠ ä¸€ä¸ªå•ä¸ªç‰ˆæœ¬å·ã€‚
 		 */
 		MultiRevisionVo revVo = new MultiRevisionVo();
 		AutoPackageConfige packageConfige = new AutoPackageConfige();     
 	    revVo.addRangeRevision(startIndex, endIndex);   
 		packageConfige.setEclipseProjectPath(workSpacePath+projectName);
-		//ÊÇ·ñ×Ô¶¯´ò°üÊı¾İ¿â¸üĞÂ true,false 
+		//æ˜¯å¦è‡ªåŠ¨æ‰“åŒ…æ•°æ®åº“æ›´æ–° true,false 
 		packageConfige.setNeedDataChange(true); 
-		//version   Ó¦ÓÃ°æ±¾ºÅ,ÓÃÀ´±êÊ¶Ê¡Ìü°æ±¾(st)»¹ÊÇ¶«İ¸°æ±¾(dw) setNeedDataChange(true) Ê±ÓĞĞ§
+		//version   åº”ç”¨ç‰ˆæœ¬å·,ç”¨æ¥æ ‡è¯†çœå…ç‰ˆæœ¬(st)è¿˜æ˜¯ä¸œèç‰ˆæœ¬(dw) setNeedDataChange(true) æ—¶æœ‰æ•ˆ
 		packageConfige.setPackeVersion("st");	
 		packageConfige.setPackagePath(updatePackagePath+projectName+"/");
 		packageConfige.setPackageName(fileCopyDirPath+"["+startIndex+"~"+endIndex+"]"); 
 		packageConfige.setUpdateSvnRec(revVo);  
 		packageConfige.setNeedDataChange(false);		
-		//¹¤³ÌÏà¶ÔsvnµÄ¸ùÂ·¾¶µÄÂ·¾¶
+		//å·¥ç¨‹ç›¸å¯¹svnçš„æ ¹è·¯å¾„çš„è·¯å¾„
 		String projectSvnPath = SVNUtil.getProjectSvnPath(packageConfige.getEclipseProjectPath());
-		//¸ù¾İ¹¤³ÌÂ·¾¶£¬»ñÈ¡¸Ä¹¤³Ì¶ÔÓ¦µÄSVNµÄÂ·¾¶
+		//æ ¹æ®å·¥ç¨‹è·¯å¾„ï¼Œè·å–æ”¹å·¥ç¨‹å¯¹åº”çš„SVNçš„è·¯å¾„
 		String svnUrl = SVNUtil.readSvnPathFromProjectPath(packageConfige.getEclipseProjectPath());
 		updateSvnConfige.setSvnUrl(svnUrl);
 		SVNOperKernel svn = new SVNOperKernel(updateSvnConfige);
 		SVNOperKernel dataChangeSvn = new SVNOperKernel(dataChangeSvnConfige);		
-		log.info("¿ªÊ¼½øĞĞ¸üĞÂ°ü´ò°ü........");		
+		log.info("å¼€å§‹è¿›è¡Œæ›´æ–°åŒ…æ‰“åŒ…........");		
 		UpdateFileAutoPackager autoPackager = new UpdateFileAutoPackager(packageConfige,svn,dataChangeSvn);
 		autoPackager.doPackageFile(fileCopyDirPath,null);	
-		log.info("¸üĞÂ°ü£º\""+packageConfige.getPackageName()+"\" ´ò°ü³É¹¦ .");		
-		// ÔÚ/recordÄ¿Â¼ÏÂ¼ÇÂ¼¸üĞÂ°ü´ò°ü¡£
+		log.info("æ›´æ–°åŒ…ï¼š\""+packageConfige.getPackageName()+"\" æ‰“åŒ…æˆåŠŸ .");		
+		// åœ¨/recordç›®å½•ä¸‹è®°å½•æ›´æ–°åŒ…æ‰“åŒ…ã€‚
 		ExcelRecoder excelRecoder = new ExcelRecoder();		
 		RecordVo recVo = new RecordVo();
 		recVo.setFileName(packageConfige.getPackageName());
